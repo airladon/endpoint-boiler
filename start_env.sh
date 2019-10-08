@@ -13,6 +13,8 @@ CMD=''
 PROJECT_PATH=`pwd`
 FAIL=0
 
+CONTAINER_NAME=endpoint-boiler
+
 stop_dev_server() {
   SERVER_RUNNING=`docker ps --format {{.Names}} \
                 | grep logdrain-dev-server`
@@ -106,7 +108,7 @@ then
     -p $HOST_PORT:$CONTAINER_PORT \
     --env PORT=$CONTAINER_PORT \
     --env-file=$PROJECT_PATH/containers/env.txt \
-    logdrain-$1
+    $CONTAINER_NAME-$1
 else
   # docker volume create browser-tests
   # docker run 
@@ -124,7 +126,7 @@ else
     -v /var/run/docker.sock:/var/run/docker.sock \
     --env-file=$PROJECT_PATH/containers/env.txt \
     -e HOST_PATH=$PROJECT_PATH \
-    --name logdrain-$1 \
+    --name $CONTAINER_NAME-$1 \
     -p $HOST_PORT:$CONTAINER_PORT \
-    logdrain-$1 $CMD
+    $CONTAINER_NAME-$1 $CMD
 fi
